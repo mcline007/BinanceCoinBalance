@@ -306,9 +306,7 @@ namespace BinanceExecute
                     double dataPoin60Minutes = trend.GetChangePercentage(ownedExchangeRate, TimeSpan.FromMinutes(60)) * 100.0;
                     double dataPoinLifeTime = trend.GetChangePercentage(ownedExchangeRate, TimeSpan.FromHours(24)) * 100.0;
                     double currencyBalance = (account.BalancesInUsd[ownedExchangeRate.MainCurrency] - account.InitialBalancesInUsd[ownedExchangeRate.MainCurrency]);
-                    double percentageGrowth = account.InitialBalancesInUsd[ownedExchangeRate.MainCurrency] != 0.0 && account.BalancesInUsd[ownedExchangeRate.MainCurrency] - account.InitialBalancesInUsd[ownedExchangeRate.MainCurrency] != 0.0
-                        ? 100.0 * (account.BalancesInUsd[ownedExchangeRate.MainCurrency] - account.InitialBalancesInUsd[ownedExchangeRate.MainCurrency]) / account.InitialBalancesInUsd[ownedExchangeRate.MainCurrency]
-                        : 0.0;
+                    double percentageGrowth = trend.GetChangePercentage(ownedExchangeRate) * 100.0;
 
                     Trend.TrendStatus action = trends[balance.Key] = trend.GetTrendStatus(ownedExchangeRate, TimeSpan.FromMinutes(1),
                         account.InitialBalancesInUsd[ownedExchangeRate.MainCurrency], account.BalancesInUsd[ownedExchangeRate.MainCurrency], 0.01, 0.3);
@@ -320,7 +318,7 @@ namespace BinanceExecute
                         new WriteLineStruct() {Text = "Change : ${0:0.00}, ", Value = currencyBalance, Threshold = 1.0},
                         new WriteLineStruct() {Text = "Growth : {0:0.00}%, ", Value = percentageGrowth, Threshold = 0.1},
                         new WriteLineStruct() {Text = "Unit Price : ${0:0.00}, ", Value = ownedExchangeRate.Price, Threshold = double.NaN},
-                        //new WriteLineStruct() {Text = (action + ", ").PadRight(10), Value = (int)action, Threshold = 0.9 },
+                        new WriteLineStruct() {Text = (action + ", ").PadRight(10), Value = (int)action, Threshold = 0.9 },                       
                         new WriteLineStruct() {Text = !double.IsNaN(dataPointHalfMinute) ? "----30 Seconds Change : {0:0.00}%, " : "", Value = dataPointHalfMinute, Threshold = 1.0},
                         new WriteLineStruct() {Text = !double.IsNaN(dataPoint1Minutes) ?"1 Minute Change : {0:0.00}%, " : "", Value = dataPoint1Minutes, Threshold = 1.0},
                         new WriteLineStruct() {Text = !double.IsNaN(dataPoint5Minutes) ?"5 Minute Change : {0:0.00}%, " : "", Value = dataPoint5Minutes, Threshold = 1.0},

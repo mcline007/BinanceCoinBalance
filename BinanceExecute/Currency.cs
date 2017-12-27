@@ -69,6 +69,7 @@ namespace BinanceExecute
         public static ICurrency WABICoin = new Currency("WABI Coin", "WABI");
         public static ICurrency DashICoin = new Currency("DASH Coin", "DASH");
         public static ICurrency STORJCoin = new Currency("STORJ Coin", "STORJ");
+        public static ICurrency CMTCoin = new Currency("CMT Coin", "CMT");
 
         public static List<ICurrency> CurrenciesToTrade = new List<ICurrency>()
         {

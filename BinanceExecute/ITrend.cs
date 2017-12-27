@@ -8,5 +8,6 @@ namespace BinanceExecute
         double GetChangePercentage(IExchangeRate exchangeRate, TimeSpan span);
         double GetChangePercentage(IExchangeRate exchangeRate, DateTime endDate, TimeSpan timeSpan);
         Trend.TrendStatus CalculateTrend(IExchangeRate exchangeRate, int divisor = 3);
-    }
+        double GetChangePercentage(IExchangeRate exchangeRate);
+    };
 }

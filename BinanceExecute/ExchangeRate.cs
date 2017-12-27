@@ -61,7 +61,7 @@ namespace BinanceExecute
         public IBinanceDataPool BinanceDataPool { private set; get; }
         public ITrend Trend { private set; get; }
 
-        public IExchangeRate BitcoinToUsdExchangeRate { private set; get; }
+        public IExchangeRate referenceUsdExchangeRate { private set; get; }
         public TimeSpan MaxHistory { private set; get; }
 
         public ExchangeRate(ICurrency mainCurrency, ICurrency referenceCurrency,
@@ -74,7 +74,7 @@ namespace BinanceExecute
 
             if (mainCurrency != Currency.Bitcoin)
             {
-                BitcoinToUsdExchangeRate = new ExchangeRate(Currency.Bitcoin, Currency.UsDollar,
+                referenceUsdExchangeRate = new ExchangeRate(Currency.Bitcoin, Currency.UsDollar,
                     binanceDataPool, maxHistory);
             }
 
@@ -94,10 +94,10 @@ namespace BinanceExecute
             else
             {
                 double priceOfSymbolInbtc = (from p in prices
-                                 where p.Symbol == MainCurrency.Symbol + BitcoinToUsdExchangeRate.MainCurrency.Symbol
+                                 where p.Symbol == MainCurrency.Symbol + referenceUsdExchangeRate.MainCurrency.Symbol
                                  select p.Price).First();
 
-                priceOfSymbol = priceOfSymbolInbtc * BitcoinToUsdExchangeRate.Price;
+                priceOfSymbol = priceOfSymbolInbtc * referenceUsdExchangeRate.Price;
             }
 
             Dictionary<DateTime, double> exchangeRateHistory = _exchangeRateHistory.Where(pair => pair.Key > DateTime.Now - MaxHistory)

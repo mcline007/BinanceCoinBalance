@@ -16,7 +16,7 @@ namespace BinanceExecute
         ICurrency ReferenceCurrency { get; }
         IBinanceDataPool BinanceDataPool { get; }
         ITrend Trend { get; }
-        IExchangeRate BitcoinToUsdExchangeRate { get; }
+        IExchangeRate referenceUsdExchangeRate { get; }
         TimeSpan MaxHistory { get; }
         double GetPerformance(DateTime dateTime);
         double GetPerformance(TimeSpan timeSpan);

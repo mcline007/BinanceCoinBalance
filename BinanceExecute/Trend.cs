@@ -147,19 +147,36 @@ namespace BinanceExecute
         public double GetChangePercentage(IExchangeRate exchangeRate, DateTime endDate, TimeSpan timeSpan)
         {
             IDictionary<DateTime, double> stockDataPoints = exchangeRate.ExhangeHistory;
-
-            if (stockDataPoints.Count == 0 || stockDataPoints.First().Key >= endDate - timeSpan)
+            return double.NaN;
+            if (stockDataPoints.Count == 0 || endDate - timeSpan <= stockDataPoints.First().Key)
             {
                 return double.NaN;
             }
 
-            double end = stockDataPoints.First(pair => pair.Key < endDate - timeSpan).Value;
-            double start = stockDataPoints.Last(pair => pair.Key < endDate).Value;
+            double end = stockDataPoints.First(pair => pair.Key >= endDate - timeSpan).Value;
+            double start = stockDataPoints.First(pair => pair.Key >= endDate).Value;
             if (start == end)
             {
                 return 0.0;
             }
             return  (start - end) / start;
+        }
+        public double GetChangePercentage(IExchangeRate exchangeRate)
+        {
+            IDictionary<DateTime, double> stockDataPoints = exchangeRate.ExhangeHistory;
+
+            if (stockDataPoints.Count == 0)
+            {
+                return double.NaN;
+            }
+
+            double end = stockDataPoints.First().Value;
+            double start = stockDataPoints.Last().Value;
+            if (start == end)
+            {
+                return 0.0;
+            }
+            return (start - end) / start;
         }
         /*double tertySecondsChange = trend.ChangePercentageToLatest(ownedExchangeRate, TimeSpan.FromMinutes(0.5));
         double oneMinuteChange = trend.ChangePercentageToLatest(ownedExchangeRate, TimeSpan.FromMinutes(1));
